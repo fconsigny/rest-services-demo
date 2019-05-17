@@ -184,9 +184,9 @@ REST, ou REpresentational State Transfer, est un style architectural permettant 
 
 | HTTP Verb | Definition | 
 |-----------|----------------|
-| OPTION |   Permet de savoir quelles | 
-| HEAD |    |
-| TRACE  |  |
+| OPTION |   La méthode HTTP OPTIONS est utilisée pour décrire les options de communication pour la ressource ciblée | 
+| HEAD | demande les en-têtes qui seraient retournés si la ressource spécifiée était demandée avec une méthode HTTP GET  |
+| TRACE  | La méthode TRACE réalise un message de test aller/retour en suivant le chemin de la ressource visée.  |
 
 
 ### Réponse HTTP
