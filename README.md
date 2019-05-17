@@ -25,6 +25,8 @@ Spring boot commence par un système d'auto-configuration, qui applique une conf
 
 En plus de ces premiers éléments qui facilitent la configuration d’un projet, Spring Boot offre d’autres avantages notamment en termes de déploiement applicatif. Habituellement, le déploiement d’une application Spring nécessite la génération d’un fichier .war qui doit être déployé  sur un serveur comme un Apache Tomcat. Spring Boot simplifie ce mécanisme en offrant la possibilité d’**intégrer directement  un serveur Tomcat** dans votre exécutable. Au lancement de celui-ci, un Tomcat embarqué sera démarré afin de faire tourner votre application.
 
+* Pour rappel, Apache Tomcat est container web libre de JSP et de servlet. Ce projet est open source et implémente Java Servlet, JavaServer Pages, Java Expression Language et Java WebSocket technologies. Ce projet est issue de l'entité Apache Software Foundation
+
 Enfin, Spring Boot met à disposition des opérationnels, des métriques qu’ils peuvent suivre une fois l’application déployée en production. Pour cela Spring Boot utilise **« Actuator »** qui est un système qui permet de monitorer une application via des URLs spécifiques ou des commandes disponibles via SSH. Sachez, qu’il est possible de définir vos propres indicateurs très facilement.
 
 Voici une liste non exhaustive des indicateurs disponibles par défaut :
