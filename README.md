@@ -41,6 +41,12 @@ Voici une liste non exhaustive des indicateurs disponibles par défaut :
 * **health**: état de santé de l’application
 * **env**: liste des profils, des propriétés et des variables d’environnement
 
+Bien que Spring Boot offre des fonctionnalités facilitant le développement. Cependant, il ne faut pas l'utiliser machinalement. Pour définir si oui ou non vous devez utiliser Spring Boot dans les projets, il faut connaître les besoins de votre application. 
+
+* Si la configuration automatique de Spring Boot ne répond pas à vos besoin; Une fois Spring boot installé, vous devez refaire toute la configuration. Il n'est pas nécessaire d'alourdir son application avec Spring Boot. 
+* De la même façon, utiliser Spring Boot juste pour bénificier d'actuator, ce n'est pas judicieux. 
+* Si l'application doit être ré-utiliser dans d'autres projets en tant que module. Avoir Tomcat dans le jar n'est pas une plus value . 
+
 # H2
 
 H2 est une **base de données relationnelle** écrite en **Java**.
@@ -171,6 +177,49 @@ REST, ou REpresentational State Transfer, est un style architectural permettant 
 | PATCH 	| Update/Modify  | 405 (Method Not Allowed), unless you want to modify the collection itself. 	                        | 200 (OK) or 204 (No Content). 404 (Not Found), if ID not found or invalid. |
 | DELETE 	| Delete 	     | 405 (Method Not Allowed), unless you want to delete the whole collection—not often desirable. 	    | 200 (OK). 404 (Not Found), if ID not found or invalid.                     |
 
+| DELETE 	| Delete 	     | 405 (Method Not Allowed), unless you want to delete the whole collection—not often desirable. 	    | 200 (OK). 404 (Not Found), if ID not found or invalid.                     |
+
+
+
+| HTTP Verb | Definition | 
+|-----------|----------------|
+
+| OPTION |   Permet de savoir quelles | 
+| HEAD |    |
+| TRACE  |  |
+
+
+Ces verbes REST sont sujet à obtenir une résponse du serveur. Les connaître permet de retourner des codes, standard et normaliser. C'est à partir de ces codes que le client peut savoir l'opération à e. Celles à connaître sont les suivantes : 
+
+
+| Code | Valeur du message | Définition | 
+|-----------|--------------|------------|
+| 200       | OK           |  succès de la requête, le contenu dépendra de la requête effectuée | 
+| 201       | Created      | la ressource a été créée | 
+| 202       | Accept       | La requête a été traitée, mais le résultat n'est pas garanti | 
+| 204       | No content   | La requête a été traitée mais n'a pas de résultat à retourner | 
+
+
+| Code | Valeur du message | Définition | 
+|-----------|--------------|------------|
+| 300       | OK           |  L'URI correspond à plusieurs ressources | 
+| 307       | OK      | Redirection temporaire | 
+
+
+| Code | Valeur du message | Définition | 
+|-----------|--------------|------------|
+| 400       | Bad request  |  succès de la requête, le contenu dépendra de la requête effectuée | 
+| 401       | Unauthorized | Il est nécessaire d'être authentifié pour effectuer la requête  | 
+| 402       | Payment required       | Il est nécessaire d'effectuer un paiement pour accéder à la ressource  | 
+| 404       | Not Found   | La ressource est introuvable | 
+| 405       | Method Not Allowed | Le protocole Http utilisé n'est pas authorizé pour accéder à la ressource | 
+
+| Code | Valeur du message | Définition | 
+|-----------|--------------|------------|
+| 500       | OK           | Erreure interne du serveur | 
+| 502       | Created      | la ressource a été créée | 
+| 503       | Accept       | La requête a été traitée, mais le résultat n'est pas garanti | 
+        
 ### Swagger, une belle UI pour voir et tester ses services
 
 Framework qui offre des outils permettant de générer la documentation pour son API Web. Il offre également une interface permettant d’explorer et tester les différentes méthodes offertes par le service.
