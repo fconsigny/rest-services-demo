@@ -1,5 +1,8 @@
 # Formation Spring Boot / Hibernate / services REST v1
 
+![H2 load types](https://blog.syloe.com/wp-content/uploads/2017/05/Logo-Spring-Boot-300x86.png) ![H2 load types](https://www.javatpoint.com/images/hibernate/hibernate2.png) 
+
+
 # Table des matières
  
  * [Spring Boot](#spring-boot)
