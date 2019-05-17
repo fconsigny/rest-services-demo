@@ -169,6 +169,8 @@ REST, ou REpresentational State Transfer, est un style architectural permettant 
 
 ### Les verbes REST et quand les utiliser
 
+#### Accès a une ressource
+
 | HTTP Verb |	CRUD         | Entire Collection (e.g. /customers)                                                                  | Specific Item (e.g. /customers/{id})                                       |
 |-----------|----------------|------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
 | POST 	    | Create 	     | 201 (Created), 'Location' header with link to /customers/{id} containing new ID. 	                | 404 (Not Found), 409 (Conflict) if resource already exists..               |
@@ -176,22 +178,23 @@ REST, ou REpresentational State Transfer, est un style architectural permettant 
 | PUT 	    | Update/Replace | 405 (Method Not Allowed), unless you want to update/replace every resource in the entire collection. | 200 (OK) or 204 (No Content). 404 (Not Found), if ID not found or invalid. |
 | PATCH 	| Update/Modify  | 405 (Method Not Allowed), unless you want to modify the collection itself. 	                        | 200 (OK) or 204 (No Content). 404 (Not Found), if ID not found or invalid. |
 | DELETE 	| Delete 	     | 405 (Method Not Allowed), unless you want to delete the whole collection—not often desirable. 	    | 200 (OK). 404 (Not Found), if ID not found or invalid.                     |
-
 | DELETE 	| Delete 	     | 405 (Method Not Allowed), unless you want to delete the whole collection—not often desirable. 	    | 200 (OK). 404 (Not Found), if ID not found or invalid.                     |
 
 
+#### Outils
 
 | HTTP Verb | Definition | 
 |-----------|----------------|
-
 | OPTION |   Permet de savoir quelles | 
 | HEAD |    |
 | TRACE  |  |
 
 
+### Réponse HTTP
+
 Ces verbes REST sont sujet à obtenir une résponse du serveur. Les connaître permet de retourner des codes, standard et normaliser. C'est à partir de ces codes que le client peut savoir l'opération à e. Celles à connaître sont les suivantes : 
 
-
+#### Succès d'une requête
 | Code | Valeur du message | Définition | 
 |-----------|--------------|------------|
 | 200       | OK           |  succès de la requête, le contenu dépendra de la requête effectuée | 
@@ -200,12 +203,15 @@ Ces verbes REST sont sujet à obtenir une résponse du serveur. Les connaître p
 | 204       | No content   | La requête a été traitée mais n'a pas de résultat à retourner | 
 
 
+#### Redirection d'une requête
 | Code | Valeur du message | Définition | 
 |-----------|--------------|------------|
-| 300       | OK           |  L'URI correspond à plusieurs ressources | 
-| 307       | OK      | Redirection temporaire | 
+| 300       | Multiple Choices	           |  L'URI correspond à plusieurs ressources | 
+| 307       | Temporary Redirect	      | Redirection temporaire | 
+| 308       | Permanent redirect         | Redirection permanente | 
+| 310       | Too many redirection | |
 
-
+#### Erreur du client web
 | Code | Valeur du message | Définition | 
 |-----------|--------------|------------|
 | 400       | Bad request  |  succès de la requête, le contenu dépendra de la requête effectuée | 
@@ -214,6 +220,7 @@ Ces verbes REST sont sujet à obtenir une résponse du serveur. Les connaître p
 | 404       | Not Found   | La ressource est introuvable | 
 | 405       | Method Not Allowed | Le protocole Http utilisé n'est pas authorizé pour accéder à la ressource | 
 
+#### Succès d'une requête
 | Code | Valeur du message | Définition | 
 |-----------|--------------|------------|
 | 500       | OK           | Erreure interne du serveur | 
