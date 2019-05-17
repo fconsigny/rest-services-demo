@@ -11,6 +11,134 @@
  * [REST](#rest)
  * [Hands On](#hands-on)
  * [Sources](#sources)
+ 
+ ### Spring
+
+Avant d’aborder le sujet de Spring Boot, il est important de comprendre les notions nécessaires à la compréhension de Spring. 
+
+Spring est un Framework applicatif, il permet de faciliter le développement d’applications. Spring est né de l'idée de fournir une solution plus simple et plus légère que celle proposée par Java EE. C'est pour cette raison que Spring a été initialement désigné comme un conteneur léger. 
+
+L'idée principale de Spring est de proposer un framework qui utilise de simples POJO pour développer des applications plutôt que d'utiliser des EJB complexes dans un conteneur.
+
+Il se repose sur 2 motifs de conception l’inversion  de contrôle (IoC) et la programmation orientée aspect (AOP). 
+
+Aujourd’hui Spring est à la version 5. de la version 4 à la version 5, Spring a été réécrit en Java 8. Il n’est pas possible d’utiliser Spring 5 avec une version antérieur à Java 8. 
+
+Spring Framework comporte plusieurs modules,  les principaux sont les suivants : 
+
+#### Spring Core Container
+
+Il contient tous les éléments nécessaires à la gestion des conteneurs Spring et la gestion des Bean Spring. 
+Il est composé des modules Spring AOP : L’AOP permet de mettre en place facilement différents fonctionnalités dans une application. On appel ces applications des “Advices”. 
+Spring Core Container contient également les éléments fondamentaux pour mettre en place l’Ioc. Avec Spring, le développeur ne se soucie pas de l’instanciation des objets utilisés dans le cadre de Spring (des composants).  A travers un objet, Spring  les instancie uniquement lorsqu’il en besoin et gère lui même le cycle de ses beans. On parle alors d’injection de dépendance.
+
+Spring repose également sur le pattern Proxy. Un objet de type proxy remplace un autre objet réel. 
+Son rôle est de de  gérer la création de l’objet réel et ses accès. Tant que le client n’a pas réellement besoin de l’objet réel, le proxy ne le crée pas. L’instanciation de cet objet réel à un coût de performance très élevé. 
+
+
+* Spring Data: Comprend les modules nécessaires pour interagir avec la base de données. Spring JDBC, Spring ORM, Spring JPA. Ce module permet d’interagir avec des  bases de données relationnelles et non-relationnelles.  
+
+* Spring Batch : module de gestion des opérations batch (intéressant dans le cadre de la planification de tâches par exemple)
+
+* Spring Security : module de gestion de sécurité (mécanisme d'authentification, identification, etc.) 
+
+* Spring MVC : Spring MVC est un Framework qui permet d’implémenter des applications selon le design pattern MVC. Spring MVC se base sur le principe décrit par le schéma ci-dessous :
+#### Parcours d’une requête
+
+![fig.1 : parcours d'une requete](https://www.tutorialspoint.com/spring/images/spring_dispatcherservlet.png)
+
+1. Après avoir reçu une requête HTTP, DispatchServlet consulte le HandlerMapping pour appeler le Controller approprié.
+
+2. Le Controller analyse la requête et appelle le la méthode du service appropriée, basé l’utilisation des méthodes POST ou GET. La méthode du service initialisera les données du model sur la base d’une logique business puis retournera le nom de la vue à la DispatcherServlet
+
+3. La DispatcherServlet s’appuiera sur le ViewResolver pour choisir la bonne vue pour la requête
+
+4. Une fois que la vue est finalisée, la DispatcherServlet passe les données du model à la vue, cette dernière étant finalement affichée sur le navigateur.
+
+Tous les composants mentionnés ci-dessus (HandlerMapping, Controller et ViewResolver) font partis du WebApplicationContext, lequel est une extension du ApplicationContext auquel on a ajouté quelques caractéristiques supplémentaires pour les applications web.
+
+
+
+
+Il existe 2 façons d’utiliser et de configurer Spring. Avec des Annotations ou en XML Pour profiter au maximum de la simplification d’écriture du code, on utilise des annotations.  Les annotations à connaître sont les suivantes  : 
+
+- Il ne faut pas mélanger du XML avec des Annotations. C'est soit l'un, soit l'autre. 
+
+#### Annotations
+
+Spring permet d'écrire simplement du code à l'aide d'annotations. L'annotation facilite l'écriture, mais il est très important de connaître ce qu'il se cache derrière une annotation. Sinon les performances et même la sécurité s'en retrouveront impactées. 
+
+
+| Annotation | Descriptions |
+| ---------- | ------------ |
+| `@Component` | Permet de définir des classes en tant que Bean Spring |
+| `@Controller` | Stéréotype pour les classes de contrôleurs |
+| `@Service` | Stereotype pour les classes de service dans la couche métier |
+| `@Repository` | Stereotype pour les classes Data Access Object (DAO) |
+| `@RequestMapping` | (Deprecated )Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Ceci est une annotation très importante, vous devriez donc passer par Spring MVC RequestMapping |
+| `@GetMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations GET (Récupération d’une ressource) 
+| `@PutMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations Put (Ajout d’une ressource)
+| `@PostMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations POST (Modification d’une ressource)
+| `@DeleteMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations DELETE (Suppression d’une ressource)
+| `@ResponseBody` | Pour envoyer un objet en réponse, généralement pour envoyer des données XML ou JSON en réponse | 
+| `@PathVariable` | Pour mapper les valeurs dynamiques de l'URI aux arguments de la méthode de gestion. |
+| `@Qualifier` | Il permet de spécifier le nom du bean annoté Avec l'annotation @Autowired pour éviter toute confusion lorsque plusieurs instances de type bean sont présentes et ont le même nom |
+| `@Scope` | Permet de préciser le cycle de vie du bean. Elle s'applique sur une classe. Les valeurs utilisables sont : singleton (Une seule instance de ce bean sera managé), prototype (recréé une instance du bean à chaque fois qu'il est sollicité), session () et request. Ces deux dernières ne sont utilisables que dans des applications web. L'annotation @Scope permet de préciser une portée différente de singleton (Portée par défaut).  |
+| `@Configuration` | Cette annotation est utilisée dans une classe qui définit les beans |
+| `@ComponentScan` | Cette annotation est utilisée avec les classes annotées @Configuration. Elle permet de spécifier dans quels packages Spring doit chercher la présence de beans. Dans les projets conséquents il est conseillé de spécifier les répertoires où se trouvent les beans. Sinon, Spring scanera tout le projet inutilement, et le temps de démarrage sera impacté |
+| `@Bean` | Fonctionne dans les classes annotées @Configuration. Elle permet de définir des Beans de type Spring. L’annotation @Bean s’applique sur des méthodes | 
+| `@Value` | Cette annotation placée sur un champ d’une classe, permet d’initialiser la valeur du champ à partir d’un fichier de propriété. On utilise cette annotation lorsque le champ est dépendant d’un environnement (ou profil). (ex. Env d’intégration, de recette, de prod) |
+| `@Required` | Cette annotation est utilisée sur les propriétés d’un bean |
+| `@Autowired` | Permet à Spring de résoudre les injections de dépendances. Il existe plusieurs facon d'injecter un bean, et l'annotation @Autowired devient déprécated. Privilégier l'injection par constructeur. exemple Injection par champ (Annotation @Autowired)
+| `@Lazy` | Cette annotation est utilisée sur des classes annotées @Component. Par défaut Spring instantie tous les beans au démarrage. Annoter @Lazy sur un @Component, permet de créer et d’initialiser le Bean qu’à la première nécessité |
+
+A noter : Les annotations Controller / Service / Repository sont des extensions de @Component.
+
+NB : Différence entre Injection par champ et injection par annotation : 
+
+```
+//Bean a injecter. 
+//Injection par champ 
+@Autowired
+ private final IngredientService ingredientService;
+
+    public IngredientController() {
+        
+    }
+
+```
+
+exemple injection par constructeur
+``` 
+//Bean a injecter 
+ private final IngredientService ingredientService;
+
+//Injection par constructeur 
+    public IngredientController(IngredientService ingredientService) {
+        this.ingredientService = ingredientService;
+    }
+````
+
+
+#### Cycle de vie d’un bean
+
+![fig.2 : Cycle de vie d'un bean](https://grokonez.com/wp-content/uploads/2016/09/bean-life-cycle.jpg)
+
+
+#### Gestion des erreurs 
+##### (Controller based, HandlerExceptionResolver, Global Exception Handler)
+
+* Controller Based
+ Nous pouvons définir des méthodes de gestion des exceptions dans nos classes de contrôleur. Tout ce dont nous avons besoin est d'annoter ces méthodes avec l'annotation @ExceptionHandler. 
+
+* Global Exception Handler
+ La gestion des exceptions est une préoccupation transversale et Spring fournit une annotation @ControllerAdvice que nous pouvons utiliser avec n'importe quelle classe pour définir notre gestionnaire d'exceptions global. 
+
+* HandlerExceptionResolver
+ Pour les exceptions génériques, nous servons la plupart du temps des pages statiques. Spring Framework fournit l'interface HandlerExceptionResolver que nous pouvons implémenter pour créer un gestionnaire d'exception global. La raison derrière cette méthode supplémentaire de définition du gestionnaire d’exception global est que Spring Framework fournit également des classes d’implémentation par défaut que nous pouvons définir dans notre fichier de configuration du bean Spring afin d’obtenir des avantages en matière de gestion des exceptions.
+
+
+Maintenant que vous êtes familier avec les modules Spring. Nous allons voir plus en détails les raisons de l’utilisation du module Spring Boot. 
 
 # Spring Boot
 
