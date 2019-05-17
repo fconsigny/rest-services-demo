@@ -69,33 +69,40 @@ Il existe 2 façons d’utiliser et de configurer Spring. Avec des Annotations o
 Spring permet d'écrire simplement du code à l'aide d'annotations. L'annotation facilite l'écriture, mais il est très important de connaître ce qu'il se cache derrière une annotation. Sinon les performances et même la sécurité s'en retrouveront impactées. 
 
 
+#### Annotation Spring
+
+Annotation pour les Bean Spring
 | Annotation | Descriptions |
 | ---------- | ------------ |
-| `@Component` | Permet de définir des classes en tant que Bean Spring |
-| `@Controller` | Stéréotype pour les classes de contrôleurs |
 | `@Service` | Stereotype pour les classes de service dans la couche métier |
 | `@Repository` | Stereotype pour les classes Data Access Object (DAO) |
-| `@RequestMapping` | (Deprecated )Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Ceci est une annotation très importante, vous devriez donc passer par Spring MVC RequestMapping |
-| `@GetMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations GET (Récupération d’une ressource) 
-| `@PutMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations Put (Ajout d’une ressource)
-| `@PostMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations POST (Modification d’une ressource)
-| `@DeleteMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations DELETE (Suppression d’une ressource)
-| `@ResponseBody` | Pour envoyer un objet en réponse, généralement pour envoyer des données XML ou JSON en réponse | 
-| `@PathVariable` | Pour mapper les valeurs dynamiques de l'URI aux arguments de la méthode de gestion. |
-| `@Qualifier` | Il permet de spécifier le nom du bean annoté Avec l'annotation @Autowired pour éviter toute confusion lorsque plusieurs instances de type bean sont présentes et ont le même nom |
-| `@Scope` | Permet de préciser le cycle de vie du bean. Elle s'applique sur une classe. Les valeurs utilisables sont : singleton (Une seule instance de ce bean sera managé), prototype (recréé une instance du bean à chaque fois qu'il est sollicité), session () et request. Ces deux dernières ne sont utilisables que dans des applications web. L'annotation @Scope permet de préciser une portée différente de singleton (Portée par défaut).  |
-| `@Configuration` | Cette annotation est utilisée dans une classe qui définit les beans |
-| `@ComponentScan` | Cette annotation est utilisée avec les classes annotées @Configuration. Elle permet de spécifier dans quels packages Spring doit chercher la présence de beans. Dans les projets conséquents il est conseillé de spécifier les répertoires où se trouvent les beans. Sinon, Spring scanera tout le projet inutilement, et le temps de démarrage sera impacté |
-| `@Bean` | Fonctionne dans les classes annotées @Configuration. Elle permet de définir des Beans de type Spring. L’annotation @Bean s’applique sur des méthodes | 
-| `@Value` | Cette annotation placée sur un champ d’une classe, permet d’initialiser la valeur du champ à partir d’un fichier de propriété. On utilise cette annotation lorsque le champ est dépendant d’un environnement (ou profil). (ex. Env d’intégration, de recette, de prod) |
-| `@Required` | Cette annotation est utilisée sur les propriétés d’un bean |
-| `@Autowired` | Permet à Spring de résoudre les injections de dépendances. Il existe plusieurs facon d'injecter un bean, et l'annotation @Autowired devient déprécated. Privilégier l'injection par constructeur. exemple Injection par champ (Annotation @Autowired)
-| `@Lazy` | Cette annotation est utilisée sur des classes annotées @Component. Par défaut Spring instantie tous les beans au démarrage. Annoter @Lazy sur un @Component, permet de créer et d’initialiser le Bean qu’à la première nécessité |
+| `@Component` | Permet de définir des classes en tant que Bean Spring |
+
 
 A noter : Les annotations Controller / Service / Repository sont des extensions de @Component.
 
 NB : Différence entre Injection par champ et injection par annotation : 
 
+
+
+| Annotation | Descriptions |
+| ---------- | ------------ |
+| `@Bean` | Fonctionne dans les classes annotées @Configuration. Elle permet de définir des Beans de type Spring. L’annotation @Bean s’applique sur des méthodes | 
+| `@Lazy` | Cette annotation est utilisée sur des classes annotées @Component. Par défaut Spring instantie tous les beans au démarrage. Annoter @Lazy sur un @Component, permet de créer et d’initialiser le Bean qu’à la première nécessité |
+| `@Required` | Cette annotation est utilisée sur les propriétés d’un bean |
+| `@Scope` | Permet de préciser le cycle de vie du bean. Elle s'applique sur une classe. Les valeurs utilisables sont : singleton (Une seule instance de ce bean sera managé), prototype (recréé une instance du bean à chaque fois qu'il est sollicité), session () et request. Ces deux dernières ne sont utilisables que dans des applications web. L'annotation @Scope permet de préciser une portée différente de singleton (Portée par défaut).  |
+
+
+| Annotation | Descriptions |
+| ---------- | ------------ |
+| `@Configuration` | Cette annotation est utilisée dans une classe qui définit les beans |
+| `@ComponentScan` | Cette annotation est utilisée avec les classes annotées @Configuration. Elle permet de spécifier dans quels packages Spring doit chercher la présence de beans. Dans les projets conséquents il est conseillé de spécifier les répertoires où se trouvent les beans. Sinon, Spring scanera tout le projet inutilement, et le temps de démarrage sera impacté |
+| `@Qualifier` | Il permet de spécifier le nom du bean annoté Avec l'annotation @Autowired pour éviter toute confusion lorsque plusieurs instances de type bean sont présentes et ont le même nom |
+| `@Value` | Cette annotation placée sur un champ d’une classe, permet d’initialiser la valeur du champ à partir d’un fichier de propriété. On utilise cette annotation lorsque le champ est dépendant d’un environnement (ou profil). (ex. Env d’intégration, de recette, de prod) |
+| `@Autowired` | Permet à Spring de résoudre les injections de dépendances. Il existe plusieurs facon d'injecter un bean, et l'annotation @Autowired devient déprécated. Privilégier l'injection par constructeur. exemple Injection par champ (Annotation @Autowired)
+
+
+Exemple d'injection par champ 
 ```
 //Bean a injecter. 
 //Injection par champ 
@@ -108,7 +115,7 @@ NB : Différence entre Injection par champ et injection par annotation :
 
 ```
 
-exemple injection par constructeur
+Exemple injection par constructeur
 ``` 
 //Bean a injecter 
  private final IngredientService ingredientService;
@@ -119,6 +126,56 @@ exemple injection par constructeur
     }
 ````
 
+Annotation Spring MVC
+| Annotation | Descriptions |
+| ---------- | ------------ |
+| `@Controller` | Stéréotype pour les classes de contrôleurs |
+| `@RequestMapping` | (Deprecated )Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Ceci est une annotation très importante, vous devriez donc passer par Spring MVC RequestMapping |
+| `@GetMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations GET (Récupération d’une ressource) 
+| `@PutMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations Put (Ajout d’une ressource)
+| `@PostMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations POST (Modification d’une ressource)
+| `@DeleteMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations DELETE (Suppression d’une ressource)
+| `@ResponseBody` | Pour envoyer un objet en réponse, généralement pour envoyer des données XML ou JSON en réponse | 
+
+| Annotation | Descriptions |
+| `@PathVariable` | Pour mapper les valeurs dynamiques de l'URI aux arguments de la méthode de gestion. |
+
+Example : 
+```
+@RequestMapping("/ressource/{ressourceID}")
+public MaRessource getMaRessource(@PathVariable String ressourceID) {
+	//Code implémenté
+}
+
+
+URL de la forme http://ip-serveur:port/application-context/ressource/ressource1
+```
+
+
+| Annotation | Descriptions |
+| `@RequestParam` | Pour mapper les valeurs dynamiques de l'URI aux arguments de la méthode de gestion. |
+
+Example : 
+```
+@RequestMapping("/ressource")
+public MaRessource getMaRessource(@RequestParam String ressourceID) {
+	//Code implémenté
+}
+
+URL de la forme http://ip-serveur:port/application-context/ressource?ressourceID=ressource1
+```
+
+| Annotation | Descriptions |
+| `@RequestBody` | Pour mapper les valeurs dynamiques de l'URI aux arguments de la méthode de gestion. |
+```
+@RequestMapping("/ressource")
+public MaRessource getMaRessource(@RequestBody String ressourceID) {
+	//Code implémenté
+}
+
+URL de la forme http://ip-serveur:port/application-context/ressource
+Le parmamètre ressourceID est défini dans le corp de la requête et n'est donc pas visible dans l'url 
+```
 
 #### Cycle de vie d’un bean
 
