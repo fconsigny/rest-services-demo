@@ -75,6 +75,7 @@ Spring permet d'écrire simplement du code à l'aide d'annotations. L'annotation
 #### Annotation Spring
 
 Annotation pour les Bean Spring
+
 | Annotation | Descriptions |
 | ---------- | ------------ |
 | `@Service` | Stereotype pour les classes de service dans la couche métier |
@@ -92,8 +93,6 @@ NB : Différence entre Injection par champ et injection par annotation :
 | `@Bean` | Fonctionne dans les classes annotées @Configuration. Elle permet de définir des Beans de type Spring. L’annotation @Bean s’applique sur des méthodes | 
 | `@Lazy` | Cette annotation est utilisée sur des classes annotées @Component. Par défaut Spring instantie tous les beans au démarrage. Annoter @Lazy sur un @Component, permet de créer et d’initialiser le Bean qu’à la première nécessité |
 | `@Required` | Cette annotation est utilisée sur les propriétés d’un bean |
-| `@Scope` | Permet de préciser le cycle de vie du bean. Elle s'applique sur une classe. Les valeurs utilisables sont : singleton (Une seule instance de ce bean sera managé), prototype (recréé une instance du bean à chaque fois qu'il est sollicité), session () et request. Ces deux dernières ne sont utilisables que dans des applications web. L'annotation @Scope permet de préciser une portée différente de singleton (Portée par défaut).  |
-
 
 | Annotation | Descriptions |
 | ---------- | ------------ |
@@ -155,7 +154,6 @@ public MaRessource getMaRessource(@PathVariable String ressourceID) {
 URL de la forme http://ip-serveur:port/application-context/ressource/ressource1
 ```
 
-
 | Annotation | Descriptions |
 | ---------- | ------------ |
 | `@RequestParam` | Pour mapper les valeurs dynamiques de l'URI aux arguments de la méthode de gestion. |
@@ -182,6 +180,20 @@ public MaRessource getMaRessource(@RequestBody String ressourceID) {
 URL de la forme http://ip-serveur:port/application-context/ressource
 Le parmamètre ressourceID est défini dans le corp de la requête et n'est donc pas visible dans l'url 
 ```
+
+#### Scope des Bean Spring 
+
+Le bean spring possède un scope, à comprendre 'une portée'. C'est grâce à ce scope que le conteneur Spring sait comment gérer le bean. 
+
+Les 2 plus fréquents sont : 
+
+* singleton :Le conteneur Spring ne pourra avoir qu'un seul bean de ce type; par conséquent une seule instance de ce bean sera managé. C'est le scope par défaut des Beans Spring. 
+
+* prototype : Recréé une instance du bean à chaque fois qu'il est sollicité
+
+Il existe également les scopes session et request. Ces deux dernières ne sont utilisables que dans des applications web. 
+
+| `@Scope` | Permet de préciser le cycle de vie du bean |
 
 #### Cycle de vie d’un bean
 
@@ -378,10 +390,6 @@ Ces verbes REST sont sujet à obtenir une résponse du serveur. Les connaître p
 | 500       | Internal Server Error	           | Erreure interne du serveur | 
 | 502       | Bad Gateway ou Proxy Error	      | la ressource a été créée | 
 | 503       | Service Unavailable	       | La requête a été traitée, mais le résultat n'est pas garanti | 
-
-
-
-
 
 Maintenant que vous êtes familier avec les modules Spring. Nous allons voir plus en détails les raisons de l’utilisation du module Spring Boot. 
 
