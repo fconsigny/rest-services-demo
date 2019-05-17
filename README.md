@@ -177,8 +177,7 @@ REST, ou REpresentational State Transfer, est un style architectural permettant 
 | GET 	    | Read 	         | 200 (OK), list of customers. Use pagination, sorting and filtering to navigate big lists. 	        | 200 (OK), single customer. 404 (Not Found), if ID not found or invalid.    |
 | PUT 	    | Update/Replace | 405 (Method Not Allowed), unless you want to update/replace every resource in the entire collection. | 200 (OK) or 204 (No Content). 404 (Not Found), if ID not found or invalid. |
 | PATCH 	| Update/Modify  | 405 (Method Not Allowed), unless you want to modify the collection itself. 	                        | 200 (OK) or 204 (No Content). 404 (Not Found), if ID not found or invalid. |
-| DELETE 	| Delete 	     | 405 (Method Not Allowed), unless you want to delete the whole collection—not often desirable. 	    | 200 (OK). 404 (Not Found), if ID not found or invalid.                     |
-| DELETE 	| Delete 	     | 405 (Method Not Allowed), unless you want to delete the whole collection—not often desirable. 	    | 200 (OK). 404 (Not Found), if ID not found or invalid.                     |
+| DELETE 	| Delete 	     | 405 (Method Not Allowed), unless you want to delete the whole collection—not often desirable. 	    | 200 (OK). 404 (Not Found), if ID not found or invalid.                     |             |
 
 
 #### Outils
@@ -223,9 +222,9 @@ Ces verbes REST sont sujet à obtenir une résponse du serveur. Les connaître p
 #### Succès d'une requête
 | Code | Valeur du message | Définition | 
 |-----------|--------------|------------|
-| 500       | OK           | Erreure interne du serveur | 
-| 502       | Created      | la ressource a été créée | 
-| 503       | Accept       | La requête a été traitée, mais le résultat n'est pas garanti | 
+| 500       | Internal Server Error	           | Erreure interne du serveur | 
+| 502       | Bad Gateway ou Proxy Error	      | la ressource a été créée | 
+| 503       | Service Unavailable	       | La requête a été traitée, mais le résultat n'est pas garanti | 
         
 ### Swagger, une belle UI pour voir et tester ses services
 
