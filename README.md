@@ -197,44 +197,6 @@ Le parmamètre ressourceID est défini dans le corp de la requête et n'est donc
 * HandlerExceptionResolver
  Pour les exceptions génériques, nous servons la plupart du temps des pages statiques. Spring Framework fournit l'interface HandlerExceptionResolver que nous pouvons implémenter pour créer un gestionnaire d'exception global. La raison derrière cette méthode supplémentaire de définition du gestionnaire d’exception global est que Spring Framework fournit également des classes d’implémentation par défaut que nous pouvons définir dans notre fichier de configuration du bean Spring afin d’obtenir des avantages en matière de gestion des exceptions.
 
-
-Maintenant que vous êtes familier avec les modules Spring. Nous allons voir plus en détails les raisons de l’utilisation du module Spring Boot. 
-
-# Spring Boot
-
-Spring Boot est un micro framework qui a pour but de faciliter la configuration d’un projet Spring et de réduire le temps alloué au démarrage d’un projet. 
-
-Spring Boot se base sur plusieurs éléments :
-
-* Un site web (https://start.spring.io/) qui vous permet de générer rapidement la structure de votre projet en y incluant toutes les dépendances Maven nécessaires à votre application.
-
-* L’utilisation de « Starters » pour gérer les dépendances. Spring a regroupé les dépendances Maven de Spring dans des « méga dépendances » afin de faciliter la gestion de celles-ci. Par exemple si vous voulez ajouter toutes les dépendances pour gérer la sécurité il suffit d’ajouter le starter « spring-boot-starter-security ».
-
-### Comment ça marche ?
-
-Spring boot commence par un système d'auto-configuration, qui applique une configuration par défaut au démarrage de votre application pour toutes dépendances présentes dans celle-ci. Cette configuration s’active à partir du moment où vous avez annoté votre application avec **« @EnableAutoConfiguration »** ou **« @SpringBootApplication »**. Bien entendu cette configuration peut-être surchargée via des propriétés Spring prédéfinie ou via une configuration Java. L’auto-configuration simplifie la configuration sans pour autant vous restreindre dans les fonctionnalités de Spring. Par exemple, si vous utilisez le starter « spring-boot-starter-security », Spring Boot vous configurera la sécurité dans votre application avec notamment un utilisateur par défaut et un mot de passe généré aléatoirement au démarrage de votre application.
-
-En plus de ces premiers éléments qui facilitent la configuration d’un projet, Spring Boot offre d’autres avantages notamment en termes de déploiement applicatif. Habituellement, le déploiement d’une application Spring nécessite la génération d’un fichier .war qui doit être déployé  sur un serveur comme un Apache Tomcat. Spring Boot simplifie ce mécanisme en offrant la possibilité d’**intégrer directement  un serveur Tomcat** dans votre exécutable. Au lancement de celui-ci, un Tomcat embarqué sera démarré afin de faire tourner votre application.
-
-* Pour rappel, Apache Tomcat est container web libre de JSP et de servlet. Ce projet est open source et implémente Java Servlet, JavaServer Pages, Java Expression Language et Java WebSocket technologies. Ce projet est issue de l'entité Apache Software Foundation
-
-Enfin, Spring Boot met à disposition des opérationnels, des métriques qu’ils peuvent suivre une fois l’application déployée en production. Pour cela Spring Boot utilise **« Actuator »** qui est un système qui permet de monitorer une application via des URLs spécifiques ou des commandes disponibles via SSH. Sachez, qu’il est possible de définir vos propres indicateurs très facilement.
-
-Voici une liste non exhaustive des indicateurs disponibles par défaut :
-
-* **metrics**: métriques de l’application (CPU, mémoire, …)
-* **beans**: liste des BEANs Spring
-* **trace**: liste des requêtes HTTP envoyées à l’application
-* **dump**: liste des threads en cours
-* **health**: état de santé de l’application
-* **env**: liste des profils, des propriétés et des variables d’environnement
-
-Bien que Spring Boot offre des fonctionnalités facilitant le développement. Cependant, il ne faut pas l'utiliser machinalement. Pour définir si oui ou non vous devez utiliser Spring Boot dans les projets, il faut connaître les besoins de votre application. 
-
-* Si la configuration automatique de Spring Boot ne répond pas à vos besoin; Une fois Spring boot installé, vous devez refaire toute la configuration. Il n'est pas nécessaire d'alourdir son application avec Spring Boot. 
-* De la même façon, utiliser Spring Boot juste pour bénificier d'actuator, ce n'est pas judicieux. 
-* Si l'application doit être ré-utiliser dans d'autres projets en tant que module. Avoir Tomcat dans le jar n'est pas une plus value . 
-
 # H2
 
 H2 est une **base de données relationnelle** écrite en **Java**.
@@ -413,6 +375,47 @@ Ces verbes REST sont sujet à obtenir une résponse du serveur. Les connaître p
 | 500       | Internal Server Error	           | Erreure interne du serveur | 
 | 502       | Bad Gateway ou Proxy Error	      | la ressource a été créée | 
 | 503       | Service Unavailable	       | La requête a été traitée, mais le résultat n'est pas garanti | 
+
+
+
+
+
+Maintenant que vous êtes familier avec les modules Spring. Nous allons voir plus en détails les raisons de l’utilisation du module Spring Boot. 
+
+# Spring Boot
+
+Spring Boot est un micro framework qui a pour but de faciliter la configuration d’un projet Spring et de réduire le temps alloué au démarrage d’un projet. 
+
+Spring Boot se base sur plusieurs éléments :
+
+* Un site web (https://start.spring.io/) qui vous permet de générer rapidement la structure de votre projet en y incluant toutes les dépendances Maven nécessaires à votre application.
+
+* L’utilisation de « Starters » pour gérer les dépendances. Spring a regroupé les dépendances Maven de Spring dans des « méga dépendances » afin de faciliter la gestion de celles-ci. Par exemple si vous voulez ajouter toutes les dépendances pour gérer la sécurité il suffit d’ajouter le starter « spring-boot-starter-security ».
+
+### Comment ça marche ?
+
+Spring boot commence par un système d'auto-configuration, qui applique une configuration par défaut au démarrage de votre application pour toutes dépendances présentes dans celle-ci. Cette configuration s’active à partir du moment où vous avez annoté votre application avec **« @EnableAutoConfiguration »** ou **« @SpringBootApplication »**. Bien entendu cette configuration peut-être surchargée via des propriétés Spring prédéfinie ou via une configuration Java. L’auto-configuration simplifie la configuration sans pour autant vous restreindre dans les fonctionnalités de Spring. Par exemple, si vous utilisez le starter « spring-boot-starter-security », Spring Boot vous configurera la sécurité dans votre application avec notamment un utilisateur par défaut et un mot de passe généré aléatoirement au démarrage de votre application.
+
+En plus de ces premiers éléments qui facilitent la configuration d’un projet, Spring Boot offre d’autres avantages notamment en termes de déploiement applicatif. Habituellement, le déploiement d’une application Spring nécessite la génération d’un fichier .war qui doit être déployé  sur un serveur comme un Apache Tomcat. Spring Boot simplifie ce mécanisme en offrant la possibilité d’**intégrer directement  un serveur Tomcat** dans votre exécutable. Au lancement de celui-ci, un Tomcat embarqué sera démarré afin de faire tourner votre application.
+
+* Pour rappel, Apache Tomcat est container web libre de JSP et de servlet. Ce projet est open source et implémente Java Servlet, JavaServer Pages, Java Expression Language et Java WebSocket technologies. Ce projet est issue de l'entité Apache Software Foundation
+
+Enfin, Spring Boot met à disposition des opérationnels, des métriques qu’ils peuvent suivre une fois l’application déployée en production. Pour cela Spring Boot utilise **« Actuator »** qui est un système qui permet de monitorer une application via des URLs spécifiques ou des commandes disponibles via SSH. Sachez, qu’il est possible de définir vos propres indicateurs très facilement.
+
+Voici une liste non exhaustive des indicateurs disponibles par défaut :
+
+* **metrics**: métriques de l’application (CPU, mémoire, …)
+* **beans**: liste des BEANs Spring
+* **trace**: liste des requêtes HTTP envoyées à l’application
+* **dump**: liste des threads en cours
+* **health**: état de santé de l’application
+* **env**: liste des profils, des propriétés et des variables d’environnement
+
+Bien que Spring Boot offre des fonctionnalités facilitant le développement. Cependant, il ne faut pas l'utiliser machinalement. Pour définir si oui ou non vous devez utiliser Spring Boot dans les projets, il faut connaître les besoins de votre application. 
+
+* Si la configuration automatique de Spring Boot ne répond pas à vos besoin; Une fois Spring boot installé, vous devez refaire toute la configuration. Il n'est pas nécessaire d'alourdir son application avec Spring Boot. 
+* De la même façon, utiliser Spring Boot juste pour bénificier d'actuator, ce n'est pas judicieux. 
+* Si l'application doit être ré-utiliser dans d'autres projets en tant que module. Avoir Tomcat dans le jar n'est pas une plus value . 
         
 ### Swagger, une belle UI pour voir et tester ses services
 
