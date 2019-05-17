@@ -1,7 +1,10 @@
 # Formation Spring Boot / Hibernate / services REST v1
 
-![H2 load types](https://blog.syloe.com/wp-content/uploads/2017/05/Logo-Spring-Boot-300x86.png) ![H2 load types](https://www.javatpoint.com/images/hibernate/hibernate2.png) 
+<p align="center">
 
+![H2 load types](https://blog.syloe.com/wp-content/uploads/2017/05/Logo-Spring-Boot-300x86.png)          ![H2 load types](https://www.javatpoint.com/images/hibernate/hibernate2.png) 
+
+</p>
 
 # Table des matières
  
@@ -11,33 +14,203 @@
  * [REST](#rest)
  * [Hands On](#hands-on)
  * [Sources](#sources)
+ 
+ ### Spring
 
-# Spring Boot
+Avant d’aborder le sujet de Spring Boot, il est important de comprendre les notions nécessaires à la compréhension de Spring. 
 
-Spring Boot est un micro framework qui a pour but de faciliter la configuration d’un projet Spring et de réduire le temps alloué au démarrage d’un projet. 
+Spring est un Framework applicatif, il permet de faciliter le développement d’applications. Spring est né de l'idée de fournir une solution plus simple et plus légère que celle proposée par Java EE. C'est pour cette raison que Spring a été initialement désigné comme un conteneur léger. 
 
-Spring Boot se base sur plusieurs éléments :
+L'idée principale de Spring est de proposer un framework qui utilise de simples POJO pour développer des applications plutôt que d'utiliser des EJB complexes dans un conteneur.
 
-* Un site web (https://start.spring.io/) qui vous permet de générer rapidement la structure de votre projet en y incluant toutes les dépendances Maven nécessaires à votre application.
+Il se repose sur 2 motifs de conception l’inversion  de contrôle (IoC) et la programmation orientée aspect (AOP). 
 
-* L’utilisation de « Starters » pour gérer les dépendances. Spring a regroupé les dépendances Maven de Spring dans des « méga dépendances » afin de faciliter la gestion de celles-ci. Par exemple si vous voulez ajouter toutes les dépendances pour gérer la sécurité il suffit d’ajouter le starter « spring-boot-starter-security ».
+Aujourd’hui Spring est à la version 5. de la version 4 à la version 5, Spring a été réécrit en Java 8. Il n’est pas possible d’utiliser Spring 5 avec une version antérieur à Java 8. 
 
-### Comment ça marche ?
+Spring Framework comporte plusieurs modules,  les principaux sont les suivants : 
 
-Spring boot commence par un système d'auto-configuration, qui applique une configuration par défaut au démarrage de votre application pour toutes dépendances présentes dans celle-ci. Cette configuration s’active à partir du moment où vous avez annoté votre application avec **« @EnableAutoConfiguration »** ou **« @SpringBootApplication »**. Bien entendu cette configuration peut-être surchargée via des propriétés Spring prédéfinie ou via une configuration Java. L’auto-configuration simplifie la configuration sans pour autant vous restreindre dans les fonctionnalités de Spring. Par exemple, si vous utilisez le starter « spring-boot-starter-security », Spring Boot vous configurera la sécurité dans votre application avec notamment un utilisateur par défaut et un mot de passe généré aléatoirement au démarrage de votre application.
+#### Spring Core Container
 
-En plus de ces premiers éléments qui facilitent la configuration d’un projet, Spring Boot offre d’autres avantages notamment en termes de déploiement applicatif. Habituellement, le déploiement d’une application Spring nécessite la génération d’un fichier .war qui doit être déployé  sur un serveur comme un Apache Tomcat. Spring Boot simplifie ce mécanisme en offrant la possibilité d’**intégrer directement  un serveur Tomcat** dans votre exécutable. Au lancement de celui-ci, un Tomcat embarqué sera démarré afin de faire tourner votre application.
+Il contient tous les éléments nécessaires à la gestion des conteneurs Spring et la gestion des Bean Spring. 
+Il est composé des modules Spring AOP : L’AOP permet de mettre en place facilement différents fonctionnalités dans une application. On appel ces applications des “Advices”. 
+Spring Core Container contient également les éléments fondamentaux pour mettre en place l’Ioc. Avec Spring, le développeur ne se soucie pas de l’instanciation des objets utilisés dans le cadre de Spring (des composants).  A travers un objet, Spring  les instancie uniquement lorsqu’il en besoin et gère lui même le cycle de ses beans. On parle alors d’injection de dépendance.
 
-Enfin, Spring Boot met à disposition des opérationnels, des métriques qu’ils peuvent suivre une fois l’application déployée en production. Pour cela Spring Boot utilise **« Actuator »** qui est un système qui permet de monitorer une application via des URLs spécifiques ou des commandes disponibles via SSH. Sachez, qu’il est possible de définir vos propres indicateurs très facilement.
+Spring repose également sur le pattern Proxy. Un objet de type proxy remplace un autre objet réel. 
+Son rôle est de de  gérer la création de l’objet réel et ses accès. Tant que le client n’a pas réellement besoin de l’objet réel, le proxy ne le crée pas. L’instanciation de cet objet réel à un coût de performance très élevé. 
 
-Voici une liste non exhaustive des indicateurs disponibles par défaut :
 
-* **metrics**: métriques de l’application (CPU, mémoire, …)
-* **beans**: liste des BEANs Spring
-* **trace**: liste des requêtes HTTP envoyées à l’application
-* **dump**: liste des threads en cours
-* **health**: état de santé de l’application
-* **env**: liste des profils, des propriétés et des variables d’environnement
+* Spring Data: Comprend les modules nécessaires pour interagir avec la base de données. Spring JDBC, Spring ORM, Spring JPA. Ce module permet d’interagir avec des  bases de données relationnelles et non-relationnelles.  
+
+* Spring Batch : module de gestion des opérations batch (intéressant dans le cadre de la planification de tâches par exemple)
+
+* Spring Security : module de gestion de sécurité (mécanisme d'authentification, identification, etc.) 
+
+* Spring MVC : Spring MVC est un Framework qui permet d’implémenter des applications selon le design pattern MVC. Spring MVC se base sur le principe décrit par le schéma ci-dessous :
+#### Parcours d’une requête
+
+![fig.1 : parcours d'une requete](https://www.tutorialspoint.com/spring/images/spring_dispatcherservlet.png)
+
+1. Après avoir reçu une requête HTTP, DispatchServlet consulte le HandlerMapping pour appeler le Controller approprié.
+
+2. Le Controller analyse la requête et appelle le la méthode du service appropriée, basé l’utilisation des méthodes POST ou GET. La méthode du service initialisera les données du model sur la base d’une logique business puis retournera le nom de la vue à la DispatcherServlet
+
+3. La DispatcherServlet s’appuiera sur le ViewResolver pour choisir la bonne vue pour la requête
+
+4. Une fois que la vue est finalisée, la DispatcherServlet passe les données du model à la vue, cette dernière étant finalement affichée sur le navigateur.
+
+Tous les composants mentionnés ci-dessus (HandlerMapping, Controller et ViewResolver) font partis du WebApplicationContext, lequel est une extension du ApplicationContext auquel on a ajouté quelques caractéristiques supplémentaires pour les applications web.
+
+
+
+
+Il existe 2 façons d’utiliser et de configurer Spring. Avec des Annotations ou en XML Pour profiter au maximum de la simplification d’écriture du code, on utilise des annotations.  Les annotations à connaître sont les suivantes  : 
+
+- Il ne faut pas mélanger du XML avec des Annotations. C'est soit l'un, soit l'autre. 
+
+#### Annotations
+
+Spring permet d'écrire simplement du code à l'aide d'annotations. L'annotation facilite l'écriture, mais il est très important de connaître ce qu'il se cache derrière une annotation. Sinon les performances et même la sécurité s'en retrouveront impactées. 
+
+
+#### Annotation Spring
+
+Annotation pour les Bean Spring
+
+| Annotation | Descriptions |
+| ---------- | ------------ |
+| `@Service` | Stereotype pour les classes de service dans la couche métier |
+| `@Repository` | Stereotype pour les classes Data Access Object (DAO) |
+| `@Component` | Permet de définir des classes en tant que Bean Spring |
+
+
+A noter : Les annotations Controller / Service / Repository sont des extensions de @Component.
+
+NB : Différence entre Injection par champ et injection par annotation : 
+
+
+| Annotation | Descriptions |
+| ---------- | ------------ |
+| `@Bean` | Fonctionne dans les classes annotées @Configuration. Elle permet de définir des Beans de type Spring. L’annotation @Bean s’applique sur des méthodes | 
+| `@Lazy` | Cette annotation est utilisée sur des classes annotées @Component. Par défaut Spring instantie tous les beans au démarrage. Annoter @Lazy sur un @Component, permet de créer et d’initialiser le Bean qu’à la première nécessité |
+| `@Required` | Cette annotation est utilisée sur les propriétés d’un bean |
+
+| Annotation | Descriptions |
+| ---------- | ------------ |
+| `@Configuration` | Cette annotation est utilisée dans une classe qui définit les beans |
+| `@ComponentScan` | Cette annotation est utilisée avec les classes annotées @Configuration. Elle permet de spécifier dans quels packages Spring doit chercher la présence de beans. Dans les projets conséquents il est conseillé de spécifier les répertoires où se trouvent les beans. Sinon, Spring scanera tout le projet inutilement, et le temps de démarrage sera impacté |
+| `@Qualifier` | Il permet de spécifier le nom du bean annoté Avec l'annotation @Autowired pour éviter toute confusion lorsque plusieurs instances de type bean sont présentes et ont le même nom |
+| `@Value` | Cette annotation placée sur un champ d’une classe, permet d’initialiser la valeur du champ à partir d’un fichier de propriété. On utilise cette annotation lorsque le champ est dépendant d’un environnement (ou profil). (ex. Env d’intégration, de recette, de prod) |
+| `@Autowired` | Permet à Spring de résoudre les injections de dépendances. Il existe plusieurs facon d'injecter un bean, et l'annotation @Autowired devient déprécated. Privilégier l'injection par constructeur. exemple Injection par champ (Annotation @Autowired)
+
+
+Exemple d'injection par champ 
+```
+//Bean a injecter. 
+//Injection par champ 
+@Autowired
+ private final IngredientService ingredientService;
+
+    public IngredientController() {
+        
+    }
+
+```
+
+Exemple injection par constructeur
+``` 
+//Bean a injecter 
+ private final IngredientService ingredientService;
+
+//Injection par constructeur 
+    public IngredientController(IngredientService ingredientService) {
+        this.ingredientService = ingredientService;
+    }
+````
+
+Annotation Spring MVC
+
+| Annotation | Descriptions |
+| ---------- | ------------ |
+| `@Controller` | Stéréotype pour les classes de contrôleurs |
+| `@RequestMapping` | (Deprecated )Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Ceci est une annotation très importante, vous devriez donc passer par Spring MVC RequestMapping |
+| `@GetMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations GET (Récupération d’une ressource) 
+| `@PutMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations Put (Ajout d’une ressource)
+| `@PostMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations POST (Modification d’une ressource)
+| `@DeleteMapping` |Pour configurer le mappage URI dans les méthodes de gestionnaire de contrôleur. Cette annotation est utilisée pour les opérations DELETE (Suppression d’une ressource)
+| `@ResponseBody` | Pour envoyer un objet en réponse, généralement pour envoyer des données XML ou JSON en réponse | 
+
+| Annotation | Descriptions |
+| ---------- | ------------ |
+| `@PathVariable` | Pour mapper les valeurs dynamiques de l'URI aux arguments de la méthode de gestion. |
+
+Example : 
+```
+@RequestMapping("/ressource/{ressourceID}")
+public MaRessource getMaRessource(@PathVariable String ressourceID) {
+	//Code implémenté
+}
+
+
+URL de la forme http://ip-serveur:port/application-context/ressource/ressource1
+```
+
+| Annotation | Descriptions |
+| ---------- | ------------ |
+| `@RequestParam` | Pour mapper les valeurs dynamiques de l'URI aux arguments de la méthode de gestion. |
+
+Example : 
+```
+@RequestMapping("/ressource")
+public MaRessource getMaRessource(@RequestParam String ressourceID) {
+	//Code implémenté
+}
+
+URL de la forme http://ip-serveur:port/application-context/ressource?ressourceID=ressource1
+```
+
+| Annotation | Descriptions |
+| ---------- | ------------ |
+| `@RequestBody` | Pour mapper les valeurs dynamiques de l'URI aux arguments de la méthode de gestion. |
+```
+@RequestMapping("/ressource")
+public MaRessource getMaRessource(@RequestBody String ressourceID) {
+	//Code implémenté
+}
+
+URL de la forme http://ip-serveur:port/application-context/ressource
+Le parmamètre ressourceID est défini dans le corp de la requête et n'est donc pas visible dans l'url 
+```
+
+#### Scope des Bean Spring 
+
+Le bean spring possède un scope, à comprendre 'une portée'. C'est grâce à ce scope que le conteneur Spring sait comment gérer le bean. 
+
+Les 2 plus fréquents sont : 
+
+* singleton :Le conteneur Spring ne pourra avoir qu'un seul bean de ce type; par conséquent une seule instance de ce bean sera managé. C'est le scope par défaut des Beans Spring. 
+
+* prototype : Recréé une instance du bean à chaque fois qu'il est sollicité
+
+Il existe également les scopes session et request. Ces deux dernières ne sont utilisables que dans des applications web. 
+
+| `@Scope` | Permet de préciser le cycle de vie du bean |
+
+#### Cycle de vie d’un bean
+
+![fig.2 : Cycle de vie d'un bean](https://grokonez.com/wp-content/uploads/2016/09/bean-life-cycle.jpg)
+
+
+#### Gestion des erreurs 
+##### (Controller based, HandlerExceptionResolver, Global Exception Handler)
+
+* Controller Based
+ Nous pouvons définir des méthodes de gestion des exceptions dans nos classes de contrôleur. Tout ce dont nous avons besoin est d'annoter ces méthodes avec l'annotation @ExceptionHandler. 
+
+* Global Exception Handler
+ La gestion des exceptions est une préoccupation transversale et Spring fournit une annotation @ControllerAdvice que nous pouvons utiliser avec n'importe quelle classe pour définir notre gestionnaire d'exceptions global. 
+
+* HandlerExceptionResolver
+ Pour les exceptions génériques, nous servons la plupart du temps des pages statiques. Spring Framework fournit l'interface HandlerExceptionResolver que nous pouvons implémenter pour créer un gestionnaire d'exception global. La raison derrière cette méthode supplémentaire de définition du gestionnaire d’exception global est que Spring Framework fournit également des classes d’implémentation par défaut que nous pouvons définir dans notre fichier de configuration du bean Spring afin d’obtenir des avantages en matière de gestion des exceptions.
 
 # H2
 
@@ -161,14 +334,100 @@ REST, ou REpresentational State Transfer, est un style architectural permettant 
 
 ### Les verbes REST et quand les utiliser
 
+#### Accès a une ressource
+
 | HTTP Verb |	CRUD         | Entire Collection (e.g. /customers)                                                                  | Specific Item (e.g. /customers/{id})                                       |
 |-----------|----------------|------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
 | POST 	    | Create 	     | 201 (Created), 'Location' header with link to /customers/{id} containing new ID. 	                | 404 (Not Found), 409 (Conflict) if resource already exists..               |
 | GET 	    | Read 	         | 200 (OK), list of customers. Use pagination, sorting and filtering to navigate big lists. 	        | 200 (OK), single customer. 404 (Not Found), if ID not found or invalid.    |
 | PUT 	    | Update/Replace | 405 (Method Not Allowed), unless you want to update/replace every resource in the entire collection. | 200 (OK) or 204 (No Content). 404 (Not Found), if ID not found or invalid. |
 | PATCH 	| Update/Modify  | 405 (Method Not Allowed), unless you want to modify the collection itself. 	                        | 200 (OK) or 204 (No Content). 404 (Not Found), if ID not found or invalid. |
-| DELETE 	| Delete 	     | 405 (Method Not Allowed), unless you want to delete the whole collection—not often desirable. 	    | 200 (OK). 404 (Not Found), if ID not found or invalid.                     |
+| DELETE 	| Delete 	     | 405 (Method Not Allowed), unless you want to delete the whole collection—not often desirable. 	    | 200 (OK). 404 (Not Found), if ID not found or invalid.                     |             |
 
+
+#### Outils
+
+| HTTP Verb | Definition | 
+|-----------|----------------|
+| OPTION |   La méthode HTTP OPTIONS est utilisée pour décrire les options de communication pour la ressource ciblée | 
+| HEAD | demande les en-têtes qui seraient retournés si la ressource spécifiée était demandée avec une méthode HTTP GET  |
+| TRACE  | La méthode TRACE réalise un message de test aller/retour en suivant le chemin de la ressource visée.  |
+
+
+### Réponse HTTP
+
+Ces verbes REST sont sujet à obtenir une résponse du serveur. Les connaître permet de retourner des codes, standard et normaliser. C'est à partir de ces codes que le client peut savoir l'opération à e. Celles à connaître sont les suivantes : 
+
+#### Succès d'une requête
+| Code | Valeur du message | Définition | 
+|-----------|--------------|------------|
+| 200       | OK           |  succès de la requête, le contenu dépendra de la requête effectuée | 
+| 201       | Created      | la ressource a été créée | 
+| 202       | Accept       | La requête a été traitée, mais le résultat n'est pas garanti | 
+| 204       | No content   | La requête a été traitée mais n'a pas de résultat à retourner | 
+
+
+#### Redirection d'une requête
+| Code | Valeur du message | Définition | 
+|-----------|--------------|------------|
+| 300       | Multiple Choices	           |  L'URI correspond à plusieurs ressources | 
+| 307       | Temporary Redirect	      | Redirection temporaire | 
+| 308       | Permanent redirect         | Redirection permanente | 
+| 310       | Too many redirection | |
+
+#### Erreur du client web
+| Code | Valeur du message | Définition | 
+|-----------|--------------|------------|
+| 400       | Bad request  |  succès de la requête, le contenu dépendra de la requête effectuée | 
+| 401       | Unauthorized | Il est nécessaire d'être authentifié pour effectuer la requête  | 
+| 402       | Payment required       | Il est nécessaire d'effectuer un paiement pour accéder à la ressource  | 
+| 404       | Not Found   | La ressource est introuvable | 
+| 405       | Method Not Allowed | Le protocole Http utilisé n'est pas authorizé pour accéder à la ressource | 
+
+#### Succès d'une requête
+| Code | Valeur du message | Définition | 
+|-----------|--------------|------------|
+| 500       | Internal Server Error	           | Erreure interne du serveur | 
+| 502       | Bad Gateway ou Proxy Error	      | la ressource a été créée | 
+| 503       | Service Unavailable	       | La requête a été traitée, mais le résultat n'est pas garanti | 
+
+Maintenant que vous êtes familier avec les modules Spring. Nous allons voir plus en détails les raisons de l’utilisation du module Spring Boot. 
+
+# Spring Boot
+
+Spring Boot est un micro framework qui a pour but de faciliter la configuration d’un projet Spring et de réduire le temps alloué au démarrage d’un projet. 
+
+Spring Boot se base sur plusieurs éléments :
+
+* Un site web (https://start.spring.io/) qui vous permet de générer rapidement la structure de votre projet en y incluant toutes les dépendances Maven nécessaires à votre application.
+
+* L’utilisation de « Starters » pour gérer les dépendances. Spring a regroupé les dépendances Maven de Spring dans des « méga dépendances » afin de faciliter la gestion de celles-ci. Par exemple si vous voulez ajouter toutes les dépendances pour gérer la sécurité il suffit d’ajouter le starter « spring-boot-starter-security ».
+
+### Comment ça marche ?
+
+Spring boot commence par un système d'auto-configuration, qui applique une configuration par défaut au démarrage de votre application pour toutes dépendances présentes dans celle-ci. Cette configuration s’active à partir du moment où vous avez annoté votre application avec **« @EnableAutoConfiguration »** ou **« @SpringBootApplication »**. Bien entendu cette configuration peut-être surchargée via des propriétés Spring prédéfinie ou via une configuration Java. L’auto-configuration simplifie la configuration sans pour autant vous restreindre dans les fonctionnalités de Spring. Par exemple, si vous utilisez le starter « spring-boot-starter-security », Spring Boot vous configurera la sécurité dans votre application avec notamment un utilisateur par défaut et un mot de passe généré aléatoirement au démarrage de votre application.
+
+En plus de ces premiers éléments qui facilitent la configuration d’un projet, Spring Boot offre d’autres avantages notamment en termes de déploiement applicatif. Habituellement, le déploiement d’une application Spring nécessite la génération d’un fichier .war qui doit être déployé  sur un serveur comme un Apache Tomcat. Spring Boot simplifie ce mécanisme en offrant la possibilité d’**intégrer directement  un serveur Tomcat** dans votre exécutable. Au lancement de celui-ci, un Tomcat embarqué sera démarré afin de faire tourner votre application.
+
+* Pour rappel, Apache Tomcat est container web libre de JSP et de servlet. Ce projet est open source et implémente Java Servlet, JavaServer Pages, Java Expression Language et Java WebSocket technologies. Ce projet est issue de l'entité Apache Software Foundation
+
+Enfin, Spring Boot met à disposition des opérationnels, des métriques qu’ils peuvent suivre une fois l’application déployée en production. Pour cela Spring Boot utilise **« Actuator »** qui est un système qui permet de monitorer une application via des URLs spécifiques ou des commandes disponibles via SSH. Sachez, qu’il est possible de définir vos propres indicateurs très facilement.
+
+Voici une liste non exhaustive des indicateurs disponibles par défaut :
+
+* **metrics**: métriques de l’application (CPU, mémoire, …)
+* **beans**: liste des BEANs Spring
+* **trace**: liste des requêtes HTTP envoyées à l’application
+* **dump**: liste des threads en cours
+* **health**: état de santé de l’application
+* **env**: liste des profils, des propriétés et des variables d’environnement
+
+Bien que Spring Boot offre des fonctionnalités facilitant le développement. Cependant, il ne faut pas l'utiliser machinalement. Pour définir si oui ou non vous devez utiliser Spring Boot dans les projets, il faut connaître les besoins de votre application. 
+
+* Si la configuration automatique de Spring Boot ne répond pas à vos besoin; Une fois Spring boot installé, vous devez refaire toute la configuration. Il n'est pas nécessaire d'alourdir son application avec Spring Boot. 
+* De la même façon, utiliser Spring Boot juste pour bénificier d'actuator, ce n'est pas judicieux. 
+* Si l'application doit être ré-utiliser dans d'autres projets en tant que module. Avoir Tomcat dans le jar n'est pas une plus value . 
+        
 ### Swagger, une belle UI pour voir et tester ses services
 
 Framework qui offre des outils permettant de générer la documentation pour son API Web. Il offre également une interface permettant d’explorer et tester les différentes méthodes offertes par le service.
