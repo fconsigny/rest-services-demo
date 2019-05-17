@@ -84,7 +84,6 @@ A noter : Les annotations Controller / Service / Repository sont des extensions 
 NB : Différence entre Injection par champ et injection par annotation : 
 
 
-
 | Annotation | Descriptions |
 | ---------- | ------------ |
 | `@Bean` | Fonctionne dans les classes annotées @Configuration. Elle permet de définir des Beans de type Spring. L’annotation @Bean s’applique sur des méthodes | 
@@ -127,6 +126,7 @@ Exemple injection par constructeur
 ````
 
 Annotation Spring MVC
+
 | Annotation | Descriptions |
 | ---------- | ------------ |
 | `@Controller` | Stéréotype pour les classes de contrôleurs |
@@ -138,6 +138,7 @@ Annotation Spring MVC
 | `@ResponseBody` | Pour envoyer un objet en réponse, généralement pour envoyer des données XML ou JSON en réponse | 
 
 | Annotation | Descriptions |
+| ---------- | ------------ |
 | `@PathVariable` | Pour mapper les valeurs dynamiques de l'URI aux arguments de la méthode de gestion. |
 
 Example : 
@@ -153,6 +154,7 @@ URL de la forme http://ip-serveur:port/application-context/ressource/ressource1
 
 
 | Annotation | Descriptions |
+| ---------- | ------------ |
 | `@RequestParam` | Pour mapper les valeurs dynamiques de l'URI aux arguments de la méthode de gestion. |
 
 Example : 
@@ -166,6 +168,7 @@ URL de la forme http://ip-serveur:port/application-context/ressource?ressourceID
 ```
 
 | Annotation | Descriptions |
+| ---------- | ------------ |
 | `@RequestBody` | Pour mapper les valeurs dynamiques de l'URI aux arguments de la méthode de gestion. |
 ```
 @RequestMapping("/ressource")
